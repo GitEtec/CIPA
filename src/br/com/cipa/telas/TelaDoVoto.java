@@ -97,6 +97,8 @@ public class TelaDoVoto extends javax.swing.JInternalFrame {
         btnVotar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
+        setClosable(true);
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("NUMERO:");
 
@@ -280,7 +282,6 @@ public class TelaDoVoto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_brnConfirmaMouseClicked
 
     private void brnConfirmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnConfirmaActionPerformed
-        //Incrementar votos No bd para candidados
         
         
         
