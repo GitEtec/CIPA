@@ -25,42 +25,11 @@ public class TelaCadastro extends javax.swing.JInternalFrame {
      * Creates new form TelaCadastro
      */
     public TelaCadastro() {
-        conexao = br.com.cipa.dal.conexao.conector();
+        conexao = br.com.cipa.dal.conexao.getConnection();
         initComponents();
     }
 
-    //Cadastra Candidato
-    private void adicionar() {
-        String sql = ("insert into cad_candidato(numero,nome,apelido,setor,idade,tempo) values(?,?,?,?,?,? )");
-        try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtCadNumero.getText());
-            pst.setString(2, txtCadNome.getText());
-            pst.setString(3, txtCadApelido.getText());
-            pst.setString(4, txtCadSetor.getText());
-            pst.setString(5, txtCadIdade.getText());
-            pst.setString(6, txtCadData.getText());
-
-            if ((txtCadNumero.getText().isEmpty()) || (txtCadNome.getText().isEmpty()) || (txtCadApelido.getText().isEmpty()) || (txtCadSetor.getText().isEmpty()) || (txtCadIdade.getText().isEmpty())) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios!");
-            } else {
-                int add = pst.executeUpdate();
-                if (add > 0) { //0 falso e 1 Ok 
-                    JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso! ");
-                    txtCadNumero.setText(null);
-                    txtCadNome.setText(null);
-                    txtCadApelido.setText(null);
-                    txtCadSetor.setText(null);
-                    txtCadIdade.setText(null);
-                    txtCadData.setText(null);
-
-                }
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-    }
+    //pst = conexao.prepareStatement(sql);
     //Edita Candidato
     private void edita_candidadato() {
         String sql = "update cad_candidato set nome=?,apelido=?,setor=?,idade=?,tempo=? where numero = ?";
@@ -73,7 +42,7 @@ public class TelaCadastro extends javax.swing.JInternalFrame {
             pst.setString(4, txtCadIdade.getText());
             pst.setString(5, txtCadData.getText());
             pst.setString(6, txtCadNumero.getText());
-            
+
             if ((txtCadNumero.getText().isEmpty()) || (txtCadNome.getText().isEmpty()) || (txtCadApelido.getText().isEmpty()) || (txtCadSetor.getText().isEmpty()) || (txtCadIdade.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios!");
             } else {
@@ -97,6 +66,7 @@ public class TelaCadastro extends javax.swing.JInternalFrame {
 
     }
 //Consulta Candidato
+
     private void consultar() {
         String sql = "select * from cad_candidato where numero =?";
         try {
@@ -124,6 +94,7 @@ public class TelaCadastro extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+
     //REMOVE O CANDIDATO
     private void remove_candidato() {
         int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja remover o Cliente ? ", "Atenção", JOptionPane.YES_NO_OPTION);
@@ -377,7 +348,36 @@ public class TelaCadastro extends javax.swing.JInternalFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // Evento quando clicar no botão Adiciona um candidato NO bd
-        adicionar();
+
+        Candidato c = new Candidato();
+
+        int numero = Integer.parseInt(txtCadNumero.getText());
+
+        String nome = txtCadNome.getText();
+        String apelido = txtCadApelido.getText();
+        String setor = txtCadSetor.getText();
+        int idade = Integer.parseInt(txtCadIdade.getText());
+        int tempo = Integer.parseInt(txtCadData.getText());
+        c.insereCandidato(numero, nome, apelido, setor, idade, tempo);
+        if ((txtCadNumero.getText().isEmpty()) || (txtCadNome.getText().isEmpty()) || (txtCadApelido.getText().isEmpty())
+                || (txtCadSetor.getText().isEmpty()) || (txtCadIdade.getText().isEmpty()) || (txtCadData.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Os campos obrigatoris não foram preenchidos.");
+        } else {
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                JOptionPane.showConfirmDialog(null, "Cliente add com sucesso");
+                txtCadNumero.setText(null);
+                txtCadNome.setText(null);
+                txtCadApelido.setText(null);
+                txtCadSetor.setText(null);
+                txtCadIdade.setText(null);
+                txtCadData.setText(null);
+
+            }
+
+        }
+
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -390,7 +390,7 @@ public class TelaCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCadNumeroActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Evento quando clicar no botão consulta o candidato no bd
+        // Evento quando clicar no bo tão consulta o candidato no bd
         consultar();
     }//GEN-LAST:event_jButton1ActionPerformed
 

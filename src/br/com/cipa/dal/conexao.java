@@ -7,6 +7,8 @@ package br.com.cipa.dal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -16,19 +18,72 @@ import java.sql.SQLException;
  */
 public class conexao {
 
-    public static Connection conector() {
-        java.sql.Connection conexao = null;
-        String driver = "com.mysql.jdbc.Driver";
+    private static final String mydatabase = "cipa";
+    private static final String DRIVER ="com.mysql.jdbc.Driver";
+    private static final String URL ="jdbc:mysql://localhost:3306/cipa";
+    private static final String USER ="root";
+    private static final String PASSWORD ="";
+    
+        
+       /* String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/cipa";
         String user = "root";
-        String password = "";
+        String password = "";*/
+     public static Connection getConnection(){
+      
         try {
-            Class.forName(driver);
-            conexao = DriverManager.getConnection(url, user, password);
-            return conexao;
-        } catch (ClassNotFoundException | SQLException e) {
-            return null;
+            Class.forName(DRIVER);
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        
+        
+        } catch (ClassNotFoundException | SQLException ex) {
+           throw new RuntimeException("Erro na Conexão !!!", ex);
+        
+        
+        }
+    
+     }
+  public static void closeConnection(Connection con){
+        if(con != null){
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.err.println("Erro!!"+ex);
+            }
+        
+        }
+        
+        }  
+  
+  
+  
+   public static void closeConnection(Connection con , PreparedStatement stmt){
+        if(stmt != null){
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                System.err.println("Erro!!"+ex);
+            }
+            closeConnection(con);
         }
     }
-
+   
+   
+   public static void closeConnection(Connection con , PreparedStatement stmt,ResultSet rs){
+        if(rs != null){
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                System.err.println("Erro!!"+ex);
+            }
+            
+        }
+        closeConnection(con,stmt);
+        }
+    
+    
+       
 }
+    
+    
+

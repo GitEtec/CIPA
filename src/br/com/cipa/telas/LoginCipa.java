@@ -61,7 +61,7 @@ public class LoginCipa extends javax.swing.JFrame {
     public LoginCipa() {
         initComponents();
         
-        conexao = br.com.cipa.dal.conexao.conector();
+        conexao = br.com.cipa.dal.conexao.getConnection();
         if (conexao != null) {
             lblstatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("br/com/cipa/imagens/ok.png")));
             lblstatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("br/com/cipa/imagens/null.png")));
